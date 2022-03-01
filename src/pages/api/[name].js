@@ -32,11 +32,15 @@ export default async function handler(req, res) {
 }
 
 async function handlerGet(req, res, db) {
-    let results = await db.query('SELECT `url` FROM `raspga_links` WHERE `name` = ?', [req.query.name]);
+    let results = await db.query('SELECT `id`, `url` FROM `raspga_links` WHERE `name` = ?', [req.query.name]);
     if (results.length === 0) {
         res.status(404).send();
         return;
     }
+    /* registrando acesso */
+    let ip = (req.headers['HTTP_CF_CONNECTING_IP'] ? req.headers['HTTP_CF_CONNECTING_IP'] : req.connection.remoteAddress);
+    await db.query('INSERT INTO `raspga_links_access` (`link_id`, `ip_address`) VALUES (?, ?)', [results[0].id, ip]);
+
     res.status(200).json({url: results[0].url})
 }
 
@@ -53,7 +57,6 @@ async function handlerPost(req, res, db) {
     }
 
     /* verificando url */
-
     if (!req.body.url_link) {
         res.status(400).json({message: 'Informe o link a ser encurtado'});
         return;
