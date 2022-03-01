@@ -47,10 +47,20 @@ export default function Home() {
         }
 
         axios.post(`/api/${url_name}`, {url_link: url_link}).then((rest) => {
-            console.log(rest.data.teste)
             setError({text: 'Link encurtado com sucesso', success: true})
         }).catch((error) => {
-            setError({text: 'Não deu pra encurtar!', success: false})
+            let data = null;
+            try {
+                data = JSON.parse(error.request.response);
+            } catch {
+                setError({text: 'Erro desconhecido', success: false})
+                return;
+            }
+            if (data.message) {
+                setError({text: data.message, success: false})
+            } else {
+                setError({text: 'Não deu pra encurtar!', success: false})
+            }
         });
     }
 
