@@ -38,7 +38,7 @@ async function handlerGet(req, res, db) {
         return;
     }
     /* registrando acesso */
-    let ip = (req.headers['HTTP_CF_CONNECTING_IP'] ? req.headers['HTTP_CF_CONNECTING_IP'] : req.connection.remoteAddress);
+    let ip = (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : req.connection.remoteAddress);
     await db.query('INSERT INTO `raspga_links_access` (`link_id`, `ip_address`) VALUES (?, ?)', [results[0].id, ip]);
 
     res.status(200).json({url: results[0].url})
@@ -78,7 +78,7 @@ async function handlerPost(req, res, db) {
         return;
     }
     
-    let ip = (req.headers['HTTP_CF_CONNECTING_IP'] ? req.headers['HTTP_CF_CONNECTING_IP'] : req.connection.remoteAddress);
+    let ip = (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : req.connection.remoteAddress);
     await db.query('INSERT INTO `raspga_links` (`name`, `url`, `ip_address`) VALUES (?, ?, ?)', [req.query.name, req.body.url_link, ip]);
     res.status(200).send();
 }
