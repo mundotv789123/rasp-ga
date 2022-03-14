@@ -1,5 +1,6 @@
 import mysql from 'serverless-mysql';
 import validuri from 'valid-url';
+import url from 'url'
 
 async function getDB() {
     var conn = mysql({
@@ -68,13 +69,19 @@ async function handlerPost(req, res, db) {
     }
 
     if (!validuri.isUri(req.body.url_link)) {
-        res.status(400).json({message: 'Link informado não é uma uri'});
+        res.status(400).json({message: 'Link informado é inválido'});
+        return;
+    }
+    
+    let blacklist = await db.query('SELECT `hostname` FROM `raspga_url_blacklist` WHERE `hostname` = ?', [url.parse(req.body.url_link).hostname]);
+    if (blacklist.length > 0) {
+        res.status(400).json({message: 'Essa URL não pode ser encurtado'});
         return;
     }
 
     let results = await db.query('SELECT `url` FROM `raspga_links` WHERE `name` = ?', [req.query.name]);
     if (results.length > 0) {
-        res.status(400).json({message: 'E nome já está em uso'});
+        res.status(400).json({message: 'O nome já está em uso'});
         return;
     }
     
