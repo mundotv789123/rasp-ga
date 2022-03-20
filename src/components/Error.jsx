@@ -12,7 +12,7 @@ const Animation = keyframes`
 const Cont = styled.div`
     text-align: center;
     border-radius: 5px;
-    padding: 5px;
+    padding: 2px;
     width: 320px;
     animation: ${Animation} 1s normal;
 `

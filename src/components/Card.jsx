@@ -7,7 +7,7 @@ const Cont = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgb(80, 80, 80);
+    background: #364e88;
 `
 
 const CardMain = styled.div`
@@ -16,7 +16,8 @@ const CardMain = styled.div`
     margin: auto;
     padding: 32px;
     border-radius: 10px;
-    border-left: solid 5px cadetblue;
+    box-shadow: 0px 0px 5px #333;
+    border-bottom: solid 3px white;
     background: rgba(0, 0, 0, 0.5);
 `
 

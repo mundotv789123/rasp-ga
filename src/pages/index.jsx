@@ -7,12 +7,12 @@ import Error from "../components/Error";
 const Input = styled.input`
     display: block;
     margin: 15px auto;
-    padding: 5px;
+    padding: 7px;
     color: white;
-    background: rgb(80, 80, 80);
+    background: rgba(80, 80, 80, 0.5);
     border: solid 1px rgb(80, 80, 80);
     &:focus {
-        border: solid 1px white;
+        border: solid 1px gray;
         outline: none;
     }
 `
@@ -22,7 +22,7 @@ const Button = styled.button`
     display: block;
     padding: 8px;
     color: white;
-    background: rgb(80, 80, 80);;
+    background: rgb(80, 80, 80);
     border: none;
     &:hover {
         background: rgb(120, 120, 120);
@@ -32,8 +32,11 @@ const Button = styled.button`
     }
 `
 
-export default function Home() {
+const Form = styled.form`
+    text-align: center;
+`
 
+export default function Home() {
     const [error, setError] = useState({text: null, success: false});
 
     const registerUrl = event => {
@@ -66,13 +69,13 @@ export default function Home() {
 
     return (
         <Card>
-            <form onSubmit={registerUrl} method={'post'}>
+            <Form onSubmit={registerUrl} method={'post'}>
                 <h1>Encurtador de Links</h1>
                 <Input id={'url_name'} placeholder={'Nome do link'} />
                 <Input id={'url_link'} placeholder={'URL para encurtar'} />
                 <Error text={error.text} success={error.success}></Error>
                 <Button>Encurtar</Button>
-            </form>
+            </Form>
         </Card>
     )
 }
