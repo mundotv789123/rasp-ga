@@ -63,8 +63,8 @@ async function handlerPost(req, res, db) {
         return;
     }
 
-    if (!req.body.url_link.length > 128) {
-        res.status(400).json({message: 'URL não pode ser maior que 128 caracteres'});
+    if (!req.body.url_link.length > 10000) {
+        res.status(400).json({message: 'URL não pode ser maior que 10000 caracteres'});
         return;
     }
 
