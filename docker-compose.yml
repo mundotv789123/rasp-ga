@@ -1,26 +1,26 @@
+version: '3.1'
 services:
+  raspga_mysql:
+    image: mariadb:10.6
+    container_name: 'raspga_mysql'
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d
+      - ./mysql_data:/var/lib/mysql
+    environment: 
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: raspga
+
   raspga:
-    image: node:17
-    command: sh -c "npm install && npm run build && npm run start"
+    image: node:16.15.0
+    container_name: 'raspga'
+    command: 'sh -c "chmod 755 ./start.sh && ./start.sh"'
     ports: 
     - 3000:3000
-    working_dir: /srv/raspga
+    working_dir: /app
     volumes:
-    - ./:/srv/raspga
+    - ./:/app
     environment:
       MYSQL_DATABASE: 'raspga'
       MYSQL_HOSTNAME: 'raspga_mysql'
       MYSQL_USERNAME: 'root'
       MYSQL_PASSWORD: 'secret'
-
-  raspga_mysql:
-    image: mariadb:10.6
-    volumes:
-      - ./migrations:/docker-entrypoint-initdb.d
-      - mysql-data:/var/lib/mysql
-    environment: 
-      MARIADB_ROOT_PASSWORD: secret
-      MARIADB_DATABASE: raspga
-
-volumes:
-  mysql-data:
