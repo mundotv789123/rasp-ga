@@ -1,0 +1,26 @@
+services:
+  raspga:
+    image: node:17
+    command: sh -c "npm install && npm run build && npm run start"
+    ports: 
+    - 3000:3000
+    working_dir: /srv/raspga
+    volumes:
+    - ./:/srv/raspga
+    environment:
+      MYSQL_DATABASE: 'raspga'
+      MYSQL_HOSTNAME: 'raspga_mysql'
+      MYSQL_USERNAME: 'root'
+      MYSQL_PASSWORD: 'secret'
+
+  raspga_mysql:
+    image: mariadb:10.6
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+    environment: 
+      MARIADB_ROOT_PASSWORD: secret
+      MARIADB_DATABASE: raspga
+
+volumes:
+  mysql-data:
