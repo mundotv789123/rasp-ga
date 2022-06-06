@@ -4,9 +4,12 @@ Site demo: [rasp.ga](https://rasp.ga).
 
 Projeto simples de encurtador de links
 
-Para iniciar primeiro instale o banco de dados
-usando o arquivo migrates/001-create_tables.sql
-
+### inicialização via Docker
 ```bash
-mysql -u <usuário> -p'<senha>' < ./migrates/001-create_tables.sql
+curl -sSL https://get.docker.com/ | CHANNEL=stable bash
+apt install docker-compose
+cd /srv
+git clone git@github.com:mundotv789123/rasp-ga.git
+cd rasp-ga
+docker-composer up -d
 ```
