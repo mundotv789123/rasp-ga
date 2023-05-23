@@ -24,7 +24,7 @@ const BackLink = styled.a`
 
 export default function Redirect() {
     const router = useRouter();
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<String | null>(null);
 
     useEffect(() => {
         if (!router.query.name) {
